@@ -9,6 +9,7 @@
     .form-group {
       margin-bottom: 1rem;
       text-align: left;
+      display: none; /* Początkowo ukryte */
     }
     .form-group label {
       display: block;
@@ -26,6 +27,11 @@
       padding: 1rem;
       border-radius: 1rem;
       text-align: left;
+    }
+    .info-text {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -47,39 +53,56 @@
 
     <div class="panel-section actions">
       <h3>Akcje</h3>
-      <div class="form-group">
-        <label for="reason">Powód:</label>
-        <input type="text" id="reason" placeholder="np. Cheaty, obraza graczy..." />
+      <button onclick="showActionForm('ban')">Ban</button>
+      <button onclick="showActionForm('warn')">Warn</button>
+      <button onclick="showActionForm('kick')">Kick</button>
+      <button onclick="showActionForm('teleport')">Teleport</button>
+      <button onclick="showActionForm('give')">Give Item</button>
+      <button onclick="showActionForm('message')">Send Message</button>
+
+      <!-- Formularz akcji - pojawia się po kliknięciu -->
+      <div class="form-group" id="action-form">
+        <div class="form-group">
+          <label for="reason">Powód:</label>
+          <input type="text" id="reason" placeholder="np. Cheaty, obraza graczy..." />
+        </div>
+        <div class="form-group">
+          <label for="duration">Czas (minuty):</label>
+          <input type="number" id="duration" placeholder="np. 60 (1h)" />
+        </div>
+        <button onclick="applyAction()">Zastosuj</button>
       </div>
-      <div class="form-group">
-        <label for="duration">Czas (minuty):</label>
-        <input type="number" id="duration" placeholder="np. 60 (1h)" />
-      </div>
-      <button onclick="applyAction('ban')">Ban</button>
-      <button onclick="applyAction('warn')">Warn</button>
-      <button onclick="applyAction('kick')">Kick</button>
-      <button onclick="applyAction('teleport')">Teleport</button>
-      <button onclick="applyAction('give')">Give Item</button>
-      <button onclick="applyAction('message')">Send Message</button>
     </div>
 
     <div class="panel-section pov-window">
       <h3>POV Gracza</h3>
       <p id="pov-output">Brak działań do wyświetlenia...</p>
     </div>
+
+    <!-- Informacja o tym, że to tylko wersja webowa -->
+    <div class="info-text">
+      Panel nie wygląda identycznie w FiveM, to tylko wersja webowa!
+    </div>
   </main>
 
   <footer>© 2025 Axol | System testowy panelu admina FiveM</footer>
 
   <script>
-    function applyAction(action) {
+    // Pokazuje formularz akcji po kliknięciu przycisku
+    function showActionForm(action) {
+      document.getElementById('action-form').style.display = 'block';
+      currentAction = action; // Zapisuje aktualną akcję (ban, warn, etc.)
+    }
+
+    // Aplikowanie akcji na graczu
+    function applyAction() {
       const reason = document.getElementById('reason').value || 'Brak powodu';
       const duration = document.getElementById('duration').value || 'czas nieokreślony';
       const nick = document.getElementById('nick').textContent;
 
       let message = '';
 
-      switch(action) {
+      switch(currentAction) {
         case 'ban':
           message = \`\${nick} został zbanowany. Powód: \${reason}. Czas: \${duration} min.\` ;
           break;
@@ -103,6 +126,7 @@
       }
 
       document.getElementById('pov-output').innerText = message;
+      document.getElementById('action-form').style.display = 'none'; // Ukrywa formularz po zastosowaniu
     }
 
     gsap.from(".panel-section", {
