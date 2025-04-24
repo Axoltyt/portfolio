@@ -7,47 +7,64 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #1a1a1a;
-      color: #fff;
+      font-family: 'Roboto', sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+      height: 100vh;
+      background: #1c1c1c;
+      color: #fff;
     }
 
-    header {
-      background-color: #212121;
-      width: 100%;
-      padding: 20px;
+    .login-container {
+      display: none;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      width: 300px;
     }
 
-    h1 {
-      font-size: 3em;
-      color: #f1c40f;
-      margin: 0;
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 2px solid #333;
+      background: #2c2c2c;
+      color: #fff;
     }
 
-    .panel {
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: #f1c40f;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background: #e1b11a;
+    }
+
+    .panel-container {
+      display: none;
       width: 80%;
+      max-width: 1000px;
       margin-top: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
     .panel-section {
+      background-color: #333;
       margin: 20px;
       padding: 20px;
-      background-color: #333;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
-      width: 100%;
-      max-width: 1200px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
     }
 
     .panel-section h3 {
@@ -80,6 +97,10 @@
     .form-group {
       margin-bottom: 1rem;
       display: none;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
     .form-group label {
@@ -89,14 +110,25 @@
 
     .form-group input {
       width: 100%;
-      padding: 0.8rem;
+      padding: 10px;
       border-radius: 8px;
-      border: none;
+      border: 1px solid #444;
+      background-color: #2c2c2c;
+      color: #fff;
     }
 
     .form-group button {
-      padding: 12px 20px;
-      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background-color: #f1c40f;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-group button:hover {
+      background-color: #e1b11a;
     }
 
     .pov-window {
@@ -113,15 +145,29 @@
       margin-top: 30px;
       text-align: center;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Panel Admina FiveM</h1>
-    <p>/panel – Zaawansowana wersja panelu webowego</p>
-  </header>
 
-  <main class="panel">
+  <!-- Panel logowania -->
+  <div class="login-container" id="login-container">
+    <h2>Panel Logowania</h2>
+    <input type="text" id="username" placeholder="Użytkownik" />
+    <input type="password" id="password" placeholder="Hasło" />
+    <button onclick="login()">Zaloguj się</button>
+  </div>
+
+  <!-- Panel Admina -->
+  <div class="panel-container" id="panel-container">
+    <header>
+      <h1>Axol Admin Panel</h1>
+      <p>/panel – Zaawansowana wersja panelu webowego</p>
+    </header>
+
     <div class="panel-section player-info">
       <h3>Gracz</h3>
       <p><strong>Nick:</strong> <span id="nick">Axol</span></p>
@@ -144,14 +190,13 @@
 
       <!-- Formularz Akcji Admina -->
       <div class="form-group" id="action-form">
-        <div class="form-group">
-          <label for="reason">Powód:</label>
-          <input type="text" id="reason" placeholder="np. Cheaty, obraza graczy..." />
-        </div>
-        <div class="form-group">
-          <label for="duration">Czas (minuty):</label>
-          <input type="number" id="duration" placeholder="np. 60 (1h)" />
-        </div>
+        <h4>Formularz Akcji: <span id="action-title">Akcja</span></h4>
+        <label for="reason">Powód:</label>
+        <input type="text" id="reason" placeholder="np. Cheaty, obraza graczy..." />
+        
+        <label for="duration">Czas (minuty):</label>
+        <input type="number" id="duration" placeholder="np. 60 (1h)" />
+
         <button onclick="applyAction()">Zastosuj Akcję</button>
       </div>
     </div>
@@ -164,18 +209,36 @@
     <div class="info-text">
       Panel nie wygląda identycznie w FiveM, to tylko wersja webowa! <br>W pełnej wersji widok jest bardziej dynamiczny.
     </div>
-  </main>
+  </div>
 
   <footer>© 2025 Axol | System testowy panelu admina FiveM</footer>
 
   <script>
     let currentAction = '';
 
+    // Funkcja logowania
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (username === 'Axol' && password === '123') {
+        // Ukryj ekran logowania
+        document.getElementById('login-container').style.display = 'none';
+        // Pokaż panel admina
+        document.getElementById('panel-container').style.display = 'block';
+      } else {
+        alert('Niepoprawny login lub hasło');
+      }
+    }
+
+    // Pokazuje formularz akcji
     function showActionForm(action) {
       document.getElementById('action-form').style.display = 'block';
       currentAction = action;
+      document.getElementById('action-title').innerText = action.charAt(0).toUpperCase() + action.slice(1); // Ustawia tytuł akcji
     }
 
+    // Aplikowanie akcji
     function applyAction() {
       const reason = document.getElementById('reason').value || 'Brak powodu';
       const duration = document.getElementById('duration').value || 'czas nieokreślony';
@@ -209,14 +272,6 @@
       document.getElementById('pov-output').innerText = message;
       document.getElementById('action-form').style.display = 'none';
     }
-
-    gsap.from(".panel-section", {
-      duration: 1,
-      y: 30,
-      opacity: 0,
-      stagger: 0.2,
-      ease: "power2.out"
-    });
   </script>
 </body>
 </html>
