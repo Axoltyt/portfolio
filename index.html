@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Axol | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axol - Strona Główna</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
+
 <body>
-  <header>
-    <h1 class="neon">Axol</h1>
-    <p class="subtitle">Developer FiveM | Webdev | Twórca Gier</p>
-    <a href="panel.html" class="link">/panel – system admina</a>
-  </header>
+    <!-- Strona Główna -->
+    <header>
+        <h1>Witaj na stronie Axol!</h1>
+        <p>Twoje centrum zarządzania grą i administracją.</p>
+    </header>
 
-  <main>
-    <section>
-      <h2>Czym się zajmuję?</h2>
-      <p>Jestem deweloperem specjalizującym się w <span>FiveM</span>. Tworzę skrypty, strony, gry i aplikacje.</p>
-    </section>
+    <div class="main-content">
+        <div class="game-container">
+            <h2>Mini Gra - Zgadywanie Liczby</h2>
+            <p>Spróbuj zgadnąć liczbę od 1 do 100!</p>
+            <input type="number" id="guess" placeholder="Wpisz liczbę" />
+            <button onclick="checkGuess()">Sprawdź</button>
+            <p id="game-result"></p>
+        </div>
 
-    <section class="projects">
-      <h2>Moje Projekty</h2>
-      <div class="card">Zaawansowany HUD do FiveM</div>
-      <div class="card">Panel Admina (Web)</div>
-      <div class="card">Cyber Runner – gra 2D</div>
-    </section>
+        <div class="login-section">
+            <button onclick="window.location.href='login.html'">Zaloguj się do panelu admina</button>
+        </div>
+    </div>
 
-    <section class="contact">
-      <h2>Kontakt</h2>
-      <p>Napisz do mnie: <a href="mailto:axoltytzapasowe@gmail.com">axoltytzapasowe@gmail.com</a></p>
-    </section>
-  </main>
+    <footer>
+        <p>© 2025 Axol | Twój portal do administrowania grą FiveM.</p>
+    </footer>
 
-  <footer>© 2025 Axol. All rights reserved.</footer>
+    <script>
+        let targetNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
 
-  <script src="script.js"></script>
+        function checkGuess() {
+            const guess = document.getElementById('guess').value;
+            attempts++;
+            if (guess == targetNumber) {
+                document.getElementById('game-result').innerText = `Brawo! Zgadłeś w ${attempts} próbach!`;
+            } else if (guess < targetNumber) {
+                document.getElementById('game-result').innerText = 'Za mało! Spróbuj ponownie.';
+            } else {
+                document.getElementById('game-result').innerText = 'Za dużo! Spróbuj ponownie.';
+            }
+        }
+    </script>
 </body>
+
 </html>
