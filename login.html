@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axol - Panel Logowania</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+
+<body>
+    <!-- Strona logowania -->
+    <div class="login-container">
+        <h2>Panel Logowania</h2>
+        <input type="text" id="username" placeholder="Użytkownik" />
+        <input type="password" id="password" placeholder="Hasło" />
+        <button onclick="login()">Zaloguj się</button>
+    </div>
+
+    <footer>
+        <p>© 2025 Axol | Twój portal do administrowania grą FiveM.</p>
+    </footer>
+
+    <script>
+        // Funkcja logowania
+        const users = {
+            "Axol": "123",
+            "admin": "admin123",
+            "user": "password123"
+        };
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Sprawdzamy login i hasło
+            if (users[username] && users[username] === password) {
+                alert('Zalogowano pomyślnie!');
+                window.location.href = "panel.html"; // Przenosi do panelu admina
+            } else {
+                alert('Niepoprawny login lub hasło');
+            }
+        }
+    </script>
+</body>
+
+</html>
