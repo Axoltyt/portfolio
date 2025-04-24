@@ -6,39 +6,119 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    header {
+      background-color: #212121;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #f1c40f;
+      margin: 0;
+    }
+
+    .panel {
+      width: 80%;
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .panel-section {
+      margin: 20px;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .panel-section h3 {
+      margin-top: 0;
+      color: #f1c40f;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 15px 25px;
+      border-radius: 8px;
+      background-color: #f1c40f;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+      color: #333;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #d4a305;
+    }
+
     .form-group {
       margin-bottom: 1rem;
-      text-align: left;
-      display: none; /* Początkowo ukryte */
+      display: none;
     }
+
     .form-group label {
       display: block;
       margin-bottom: 0.3rem;
     }
-    .form-group input, .form-group textarea {
+
+    .form-group input {
       width: 100%;
-      padding: 0.5rem;
-      border-radius: 0.3rem;
+      padding: 0.8rem;
+      border-radius: 8px;
       border: none;
     }
+
+    .form-group button {
+      padding: 12px 20px;
+      margin-top: 15px;
+    }
+
     .pov-window {
-      margin-top: 2rem;
-      background: rgba(255,255,255,0.07);
-      padding: 1rem;
-      border-radius: 1rem;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 15px;
+      border-radius: 8px;
       text-align: left;
     }
+
     .info-text {
-      font-size: 0.8rem;
+      font-size: 1rem;
       color: #aaa;
-      margin-top: 1rem;
+      margin-top: 30px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1 class="neon">Panel Admina</h1>
-    <p class="subtitle">/panel – podgląd webowego systemu dla administratora</p>
+    <h1>Panel Admina FiveM</h1>
+    <p>/panel – Zaawansowana wersja panelu webowego</p>
   </header>
 
   <main class="panel">
@@ -52,15 +132,17 @@
     </div>
 
     <div class="panel-section actions">
-      <h3>Akcje</h3>
-      <button onclick="showActionForm('ban')">Ban</button>
-      <button onclick="showActionForm('warn')">Warn</button>
-      <button onclick="showActionForm('kick')">Kick</button>
-      <button onclick="showActionForm('teleport')">Teleport</button>
-      <button onclick="showActionForm('give')">Give Item</button>
-      <button onclick="showActionForm('message')">Send Message</button>
+      <h3>Akcje Admina</h3>
+      <div class="button-group">
+        <button onclick="showActionForm('ban')">Ban</button>
+        <button onclick="showActionForm('warn')">Warn</button>
+        <button onclick="showActionForm('kick')">Kick</button>
+        <button onclick="showActionForm('teleport')">Teleport</button>
+        <button onclick="showActionForm('give')">Give Item</button>
+        <button onclick="showActionForm('message')">Send Message</button>
+      </div>
 
-      <!-- Formularz akcji - pojawia się po kliknięciu -->
+      <!-- Formularz Akcji Admina -->
       <div class="form-group" id="action-form">
         <div class="form-group">
           <label for="reason">Powód:</label>
@@ -70,7 +152,7 @@
           <label for="duration">Czas (minuty):</label>
           <input type="number" id="duration" placeholder="np. 60 (1h)" />
         </div>
-        <button onclick="applyAction()">Zastosuj</button>
+        <button onclick="applyAction()">Zastosuj Akcję</button>
       </div>
     </div>
 
@@ -79,22 +161,21 @@
       <p id="pov-output">Brak działań do wyświetlenia...</p>
     </div>
 
-    <!-- Informacja o tym, że to tylko wersja webowa -->
     <div class="info-text">
-      Panel nie wygląda identycznie w FiveM, to tylko wersja webowa!
+      Panel nie wygląda identycznie w FiveM, to tylko wersja webowa! <br>W pełnej wersji widok jest bardziej dynamiczny.
     </div>
   </main>
 
   <footer>© 2025 Axol | System testowy panelu admina FiveM</footer>
 
   <script>
-    // Pokazuje formularz akcji po kliknięciu przycisku
+    let currentAction = '';
+
     function showActionForm(action) {
       document.getElementById('action-form').style.display = 'block';
-      currentAction = action; // Zapisuje aktualną akcję (ban, warn, etc.)
+      currentAction = action;
     }
 
-    // Aplikowanie akcji na graczu
     function applyAction() {
       const reason = document.getElementById('reason').value || 'Brak powodu';
       const duration = document.getElementById('duration').value || 'czas nieokreślony';
@@ -104,7 +185,7 @@
 
       switch(currentAction) {
         case 'ban':
-          message = \`\${nick} został zbanowany. Powód: \${reason}. Czas: \${duration} min.\` ;
+          message = \`\${nick} został zbanowany. Powód: \${reason}. Czas: \${duration} min.\`;
           break;
         case 'warn':
           message = \`\${nick} otrzymał ostrzeżenie. Powód: \${reason}.\`;
@@ -126,7 +207,7 @@
       }
 
       document.getElementById('pov-output').innerText = message;
-      document.getElementById('action-form').style.display = 'none'; // Ukrywa formularz po zastosowaniu
+      document.getElementById('action-form').style.display = 'none';
     }
 
     gsap.from(".panel-section", {
