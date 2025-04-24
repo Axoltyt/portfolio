@@ -6,43 +6,26 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
-    .panel {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 2rem;
+    .form-group {
+      margin-bottom: 1rem;
+      text-align: left;
     }
-
-    .panel-section {
-      background: rgba(255,255,255,0.05);
-      padding: 2rem;
-      border-radius: 1rem;
-      width: 45%;
-      min-width: 300px;
+    .form-group label {
+      display: block;
+      margin-bottom: 0.3rem;
     }
-
-    .panel-section h3 {
-      margin-top: 0;
-      color: #00f7ff;
-    }
-
-    .player-info p, .actions button {
-      margin: 0.5rem 0;
-    }
-
-    .actions button {
-      background: #00f7ff;
-      color: #000;
-      padding: 0.7rem 1rem;
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 0.3rem;
       border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: 0.3s;
     }
-
-    .actions button:hover {
-      background: #00e0ff;
+    .pov-window {
+      margin-top: 2rem;
+      background: rgba(255,255,255,0.07);
+      padding: 1rem;
+      border-radius: 1rem;
+      text-align: left;
     }
   </style>
 </head>
@@ -55,7 +38,7 @@
   <main class="panel">
     <div class="panel-section player-info">
       <h3>Gracz</h3>
-      <p><strong>Nick:</strong> Axol</p>
+      <p><strong>Nick:</strong> <span id="nick">Axol</span></p>
       <p><strong>ID:</strong> 42</p>
       <p><strong>Status:</strong> Online</p>
       <p><strong>Ping:</strong> 33ms</p>
@@ -64,18 +47,64 @@
 
     <div class="panel-section actions">
       <h3>Akcje</h3>
-      <button>Ban</button>
-      <button>Warn</button>
-      <button>Kick</button>
-      <button>Teleport to Me</button>
-      <button>Give Item</button>
-      <button>Send Message</button>
+      <div class="form-group">
+        <label for="reason">Powód:</label>
+        <input type="text" id="reason" placeholder="np. Cheaty, obraza graczy..." />
+      </div>
+      <div class="form-group">
+        <label for="duration">Czas (minuty):</label>
+        <input type="number" id="duration" placeholder="np. 60 (1h)" />
+      </div>
+      <button onclick="applyAction('ban')">Ban</button>
+      <button onclick="applyAction('warn')">Warn</button>
+      <button onclick="applyAction('kick')">Kick</button>
+      <button onclick="applyAction('teleport')">Teleport</button>
+      <button onclick="applyAction('give')">Give Item</button>
+      <button onclick="applyAction('message')">Send Message</button>
+    </div>
+
+    <div class="panel-section pov-window">
+      <h3>POV Gracza</h3>
+      <p id="pov-output">Brak działań do wyświetlenia...</p>
     </div>
   </main>
 
   <footer>© 2025 Axol | System testowy panelu admina FiveM</footer>
 
   <script>
+    function applyAction(action) {
+      const reason = document.getElementById('reason').value || 'Brak powodu';
+      const duration = document.getElementById('duration').value || 'czas nieokreślony';
+      const nick = document.getElementById('nick').textContent;
+
+      let message = '';
+
+      switch(action) {
+        case 'ban':
+          message = \`\${nick} został zbanowany. Powód: \${reason}. Czas: \${duration} min.\` ;
+          break;
+        case 'warn':
+          message = \`\${nick} otrzymał ostrzeżenie. Powód: \${reason}.\`;
+          break;
+        case 'kick':
+          message = \`\${nick} został wyrzucony z serwera. Powód: \${reason}.\`;
+          break;
+        case 'teleport':
+          message = \`\${nick} został teleportowany.\`;
+          break;
+        case 'give':
+          message = \`\${nick} otrzymał przedmiot: \${reason}.\`;
+          break;
+        case 'message':
+          message = \`\${nick} otrzymał wiadomość: "\${reason}".\`;
+          break;
+        default:
+          message = 'Nieznana akcja.';
+      }
+
+      document.getElementById('pov-output').innerText = message;
+    }
+
     gsap.from(".panel-section", {
       duration: 1,
       y: 30,
