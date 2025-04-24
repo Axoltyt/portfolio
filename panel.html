@@ -149,6 +149,24 @@
     .hidden {
       display: none;
     }
+
+    .back-button {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.2em;
+      margin-top: 20px;
+      display: inline-block;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #2980b9;
+    }
   </style>
 </head>
 <body>
@@ -167,6 +185,9 @@
       <h1>Axol Admin Panel</h1>
       <p>/panel – Zaawansowana wersja panelu webowego</p>
     </header>
+
+    <!-- Przycisk do powrotu na stronę główną -->
+    <a href="index.html" class="back-button">Wróć na stronę główną</a>
 
     <div class="panel-section player-info">
       <h3>Gracz</h3>
