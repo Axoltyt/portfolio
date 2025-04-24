@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Axol Admin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    .panel {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .panel-section {
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
+      border-radius: 1rem;
+      width: 45%;
+      min-width: 300px;
+    }
+
+    .panel-section h3 {
+      margin-top: 0;
+      color: #00f7ff;
+    }
+
+    .player-info p, .actions button {
+      margin: 0.5rem 0;
+    }
+
+    .actions button {
+      background: #00f7ff;
+      color: #000;
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .actions button:hover {
+      background: #00e0ff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="neon">Panel Admina</h1>
+    <p class="subtitle">/panel – podgląd webowego systemu dla administratora</p>
+  </header>
+
+  <main class="panel">
+    <div class="panel-section player-info">
+      <h3>Gracz</h3>
+      <p><strong>Nick:</strong> Axol</p>
+      <p><strong>ID:</strong> 42</p>
+      <p><strong>Status:</strong> Online</p>
+      <p><strong>Ping:</strong> 33ms</p>
+      <p><strong>Pozycja:</strong> x: 235.2, y: -1402.3, z: 29.1</p>
+    </div>
+
+    <div class="panel-section actions">
+      <h3>Akcje</h3>
+      <button>Ban</button>
+      <button>Warn</button>
+      <button>Kick</button>
+      <button>Teleport to Me</button>
+      <button>Give Item</button>
+      <button>Send Message</button>
+    </div>
+  </main>
+
+  <footer>© 2025 Axol | System testowy panelu admina FiveM</footer>
+
+  <script>
+    gsap.from(".panel-section", {
+      duration: 1,
+      y: 30,
+      opacity: 0,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
+  </script>
+</body>
+</html>
